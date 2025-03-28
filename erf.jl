@@ -15,4 +15,48 @@ const TwoOverSqrtPiMinusOne=0x1.06eba8214db69p-3
 
 function erf(x::Float64)
 
+    ## This part of the algorithm is not used, 
+    ## comparision with decimal values was chosen instead
+
+    # # top 32 bits 
+    # ix::UInt32=asuint32(x)
+    # # top 32, unsigned 
+    # ax::UInt32=ix & 0x7fffffff
+    # # sign
+    # UInt32=ix>>31
+
+    sign::Bool=x<0;
+
+
+    if sign 
+        x=-x
+    end
+
+
+    if (x < 0.84375)
+        # /* a = |x| < 0.84375.  */
+
+        if (ia < 2^(-28))
+            #/* a < 2^(-28).  */
+            if (ia < 2^(-1015))
+                #/* a < 2^(-1015).  */
+                y::Float64 =  fma(TwoOverSqrtPiMinusOne, x, x);
+
+                ## case of underflow TBD
+                #return check_uflow (y)
+                return y
+            end   
+            return x + TwoOverSqrtPiMinusOne * x;
+        end
+
+    end
+
+
+
+
+
+
+
+
+    print(ix);
 end
