@@ -209,7 +209,7 @@ function erf(x::Float64)
         r7 = fma(a, PF[14], PF[13])
         r8 = fma(a, PF[16], PF[15])
 
-        r9 = PF[16]
+        r9 = PF[17]
 
         a2 = a * a
 
