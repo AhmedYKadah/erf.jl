@@ -17,6 +17,7 @@ function erf(x::Float64)
 
     ## This part of the algorithm is not used, 
     ## comparision with decimal values was chosen instead
+    ## asuint32 is supposed to output the top 32 bits of the input float but I couldn't find a way to implement it right now
 
     # # top 32 bits 
     # ix::UInt32=asuint32(x)
@@ -25,28 +26,218 @@ function erf(x::Float64)
     # # sign
     # UInt32=ix>>31
 
-    sign::Bool=x<0;
+    sign::Bool=x<0
+
+    xabs=abs(x)
 
 
-    if sign 
-        x=-x
-    end
 
+    if (xabs < 0.84375)
+    #  a = |x| < 0.84375.  
 
-    if (x < 0.84375)
-        # /* a = |x| < 0.84375.  */
-
-        if (ia < 2^(-28))
-            #/* a < 2^(-28).  */
-            if (ia < 2^(-1015))
-                #/* a < 2^(-1015).  */
-                y::Float64 =  fma(TwoOverSqrtPiMinusOne, x, x);
+        if (xabs < 2^(-28))
+        # a < 2^(-28).  
+            if (xabs < 2^(-1015))
+            # a < 2^(-1015).  
+                y =  fma(TwoOverSqrtPiMinusOne, x, x)
 
                 ## case of underflow TBD
                 #return check_uflow (y)
                 return y
             end   
-            return x + TwoOverSqrtPiMinusOne * x;
+            return x + TwoOverSqrtPiMinusOne * x
+        end
+
+        x2 = x * x
+
+        if (xabs < 0.5)
+        ## a < 0.5  - Use polynomial approximation.  
+            r1 = fma(x2, PA[2], PA[1])
+            r2 = fma(x2, PA[4], PA[3])
+            r3 = fma(x2, PA[6], PA[5])
+            r4 = fma(x2, PA[8], PA[7])
+            r5 = fma(x2, PA[10], PA[9])
+
+            x4 = x2 * x2
+            r = r5
+            r = fma(x4, r, r4)
+            r = fma(x4, r, r3)
+            r = fma(x4, r, r2)
+            r = fma(x4, r, r1)
+            return fma(r, x, x) ## This fmais crucial for accuracy.  
+        else
+        ## 0.5 <= a < 0.84375 - Use rational approximation.  
+
+            r1n = fma(x2, NA[2], NA[1])
+            x4 = x2 * x2
+            r2n = fma(x2, NA[4], NA[3])
+            x8 = x4 * x4
+            r1d = fma(x2, DA[1], 1.0)
+            r2d = fma(x2, DA[3], DA[2])
+            r3d = fma(x2, DA[5], DA[4])
+            P = r1n + x4 * r2n + x8 * NA[5]
+
+            Q = r1d + x4 * r2d + x8 * r3d
+            return fma(P / Q, x, x)
+        end
+    elseif (xabs < 1.25)
+    ## 0.84375 <= |x| < 1.25.  
+
+        a = abs(x) - 1.0
+        r1n = fma(a, NB[2], NB[1])
+        a2 = a * a
+        r1d = fma(a, DB[1], 1.0)
+        a4 = a2 * a2
+        r2n = fma(a, NB[4], NB[3])
+        a6 = a4 * a2
+        r2d = fma(a, DB[3], DB[2])
+        r3n = fma(a, NB[6], NB[5])
+        r3d = fma(a, DB[5], DB[4])
+        r4n = NB[7]
+        r4d = DB[6]
+
+        P = r1n + a2 * r2n + a4 * r3n + a6 * r4n
+        Q = r1d + a2 * r2d + a4 * r3d + a6 * r4d
+        if (sign)
+            return -C - P / Q
+        else
+            return C + P / Q
+        end
+    elseif (xabs < 2.0)
+    ## 1.25 <= |x| < 2.0.  
+        a = abs(x)
+        a = a - 1.25
+
+        r1 = fma(a, PC[2], PC[1])
+        r2 = fma(a, PC[4], PC[3])
+        r3 = fma(a, PC[6], PC[5])
+        r4 = fma(a, PC[8], PC[7])
+        r5 = fma(a, PC[10], PC[9])
+        r6 = fma(a, PC[12], PC[11])
+        r7 = fma(a, PC[14], PC[13])
+        r8 = fma(a, PC[16], PC[15])
+
+
+        a2 = a * a
+
+        r = r8
+        r = fma(a2, r, r7)
+        r = fma(a2, r, r6)
+        r = fma(a2, r, r5)
+        r = fma(a2, r, r4)
+        r = fma(a2, r, r3)
+        r = fma(a2, r, r2)
+        r = fma(a2, r, r1)
+
+        if (sign)
+            return -1.0 + r
+        else
+            return 1.0 - r
+        end
+    elseif (xabs < 3.25)
+    ## 2 <= |x| < 3.25.  
+        a = abs(x)
+        a = fma(0.5, a, -1.0)
+
+        r1 = fma(a, PD[2], PD[1])
+        r2 = fma(a, PD[4], PD[3])
+        r3 = fma(a, PD[6], PD[5])
+        r4 = fma(a, PD[8], PD[7])
+        r5 = fma(a, PD[10], PD[9])
+        r6 = fma(a, PD[12], PD[11])
+        r7 = fma(a, PD[14], PD[13])
+        r8 = fma(a, PD[16], PD[15])
+        r9 = fma(a, PD[18], PD[17])
+
+        a2 = a * a
+
+        r = r9
+        r = fma(a2, r, r8)
+        r = fma(a2, r, r7)
+        r = fma(a2, r, r6)
+        r = fma(a2, r, r5)
+        r = fma(a2, r, r4)
+        r = fma(a2, r, r3)
+        r = fma(a2, r, r2)
+        r = fma(a2, r, r1)
+
+        if (sign)
+            return -1.0 + r
+        else
+            return 1.0 - r
+        end
+    elseif (xabs < 4.0)
+    ## 3.25 <= |x| < 4.0.  
+        a = abs(x)
+        a = a - 3.25
+
+        r1 = fma(a, PE[2], PE[1])
+        r2 = fma(a, PE[4], PE[3])
+        r3 = fma(a, PE[6], PE[5])
+        r4 = fma(a, PE[8], PE[7])
+        r5 = fma(a, PE[10], PE[9])
+        r6 = fma(a, PE[12], PE[11])
+        r7 = fma(a, PE[14], PE[13])
+
+
+        a2 = a * a
+
+        r = r7
+        r = fma(a2, r, r6)
+        r = fma(a2, r, r5)
+        r = fma(a2, r, r4)
+        r = fma(a2, r, r3)
+        r = fma(a2, r, r2)
+        r = fma(a2, r, r1)
+
+        if (sign)
+            return -1.0 + r
+        else
+            return 1.0 - r
+        end
+    elseif (xabs < 5.9025)
+    ## 4 <= |x| < 5.90625.  
+        a = abs(x)
+        a = fma(0.5, a, -2.0)
+
+        r1 = fma(a, PF[2], PF[1])
+        r2 = fma(a, PF[4], PF[3])
+        r3 = fma(a, PF[6], PF[5])
+        r4 = fma(a, PF[8], PF[7])
+        r5 = fma(a, PF[10], PF[9])
+        r6 = fma(a, PF[12], PF[11])
+        r7 = fma(a, PF[14], PF[13])
+        r8 = fma(a, PF[16], PF[15])
+
+        r9 = PF[16]
+
+        a2 = a * a
+
+        r = r9
+        r = fma(a2, r, r8)
+        r = fma(a2, r, r7)
+        r = fma(a2, r, r6)
+        r = fma(a2, r, r5)
+        r = fma(a2, r, r4)
+        r = fma(a2, r, r3)
+        r = fma(a2, r, r2)
+        r = fma(a2, r, r1)
+
+        if (sign)
+            return -1.0 + r
+        else
+            return 1.0 - r
+        end
+    else
+        
+        ## Special cases : erf(nan)=nan, erf(+inf)=+1 and erf(-inf)=-1.  
+        # if (xabs >= 0x7ff00000)
+        # return Float64((1.0 - (sign << 1)) + 1.0 / x)
+
+        if (sign)
+            return -1.0
+        else
+            return 1.0
         end
 
     end
@@ -58,5 +249,6 @@ function erf(x::Float64)
 
 
 
-    print(ix);
+    print(ix)
 end
+
