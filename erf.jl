@@ -249,6 +249,5 @@ function erf(x::Float64)
 
 
 
-    print(ix)
 end
 
