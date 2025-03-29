@@ -15,29 +15,26 @@ const TwoOverSqrtPiMinusOne=0x1.06eba8214db69p-3
 
 function erf(x::Float64)
 
-    ## This part of the algorithm is not used, 
-    ## comparision with decimal values was chosen instead
-    ## asuint32 is supposed to output the top 32 bits of the input float but I couldn't find a way to implement it right now
 
     # # top 32 bits 
-    # ix::UInt32=asuint32(x)
-    # # top 32, unsigned 
-    # ax::UInt32=ix & 0x7fffffff
+    ix::UInt32=reinterpret(UInt64,x)>>32
+    # # top 32, without sign bit 
+    ia::UInt32=ix & 0x7fffffff
     # # sign
-    # UInt32=ix>>31
+    # sign::UInt32=ix>>31
 
     sign::Bool=x<0
 
-    xabs=abs(x)
+    # xabs=abs(x)
 
 
 
-    if (xabs < 0.84375)
+    if (ia < 0x3feb0000)
     #  a = |x| < 0.84375.  
 
-        if (xabs < 2^(-28))
+        if (ia < 0x3e300000)
         # a < 2^(-28).  
-            if (xabs < 2^(-1015))
+            if (ia < 0x00800000)
             # a < 2^(-1015).  
                 y =  fma(TwoOverSqrtPiMinusOne, x, x)
 
@@ -50,7 +47,7 @@ function erf(x::Float64)
 
         x2 = x * x
 
-        if (xabs < 0.5)
+        if (ia < 0x3fe00000)
         ## a < 0.5  - Use polynomial approximation.  
             r1 = fma(x2, PA[2], PA[1])
             r2 = fma(x2, PA[4], PA[3])
@@ -80,7 +77,7 @@ function erf(x::Float64)
             Q = r1d + x4 * r2d + x8 * r3d
             return fma(P / Q, x, x)
         end
-    elseif (xabs < 1.25)
+    elseif (ia < 0x3ff40000)
     ## 0.84375 <= |x| < 1.25.  
 
         a = abs(x) - 1.0
@@ -103,7 +100,7 @@ function erf(x::Float64)
         else
             return C + P / Q
         end
-    elseif (xabs < 2.0)
+    elseif (ia < 0x40000000)
     ## 1.25 <= |x| < 2.0.  
         a = abs(x)
         a = a - 1.25
@@ -134,7 +131,7 @@ function erf(x::Float64)
         else
             return 1.0 - r
         end
-    elseif (xabs < 3.25)
+    elseif (ia < 0x400a0000)
     ## 2 <= |x| < 3.25.  
         a = abs(x)
         a = fma(0.5, a, -1.0)
@@ -166,7 +163,7 @@ function erf(x::Float64)
         else
             return 1.0 - r
         end
-    elseif (xabs < 4.0)
+    elseif (ia < 0x40100000)
     ## 3.25 <= |x| < 4.0.  
         a = abs(x)
         a = a - 3.25
@@ -195,7 +192,7 @@ function erf(x::Float64)
         else
             return 1.0 - r
         end
-    elseif (xabs < 5.9025)
+    elseif (ia < 0x4017a000)
     ## 4 <= |x| < 5.90625.  
         a = abs(x)
         a = fma(0.5, a, -2.0)
@@ -230,9 +227,6 @@ function erf(x::Float64)
         end
     else
         
-        ## Special cases : erf(nan)=nan, erf(+inf)=+1 and erf(-inf)=-1.  
-        # if (xabs >= 0x7ff00000)
-        # return Float64((1.0 - (sign << 1)) + 1.0 / x)
 
         if (sign)
             return -1.0
