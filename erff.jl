@@ -8,10 +8,10 @@
 
 
 # Minimax approximation of erff. 
-const A=(0x1.06eba6p-03, -0x1.8126e0p-02, 0x1.ce1a46p-04, -0x1.b68bd2p-06, 0x1.47348p-08, -0x1.3a1a82p-11)
-const B=(0x1.079d0cp-3, 0x1.450aa0p-1, 0x1.b55cb0p-4, -0x1.8d6300p-6, 0x1.d1336p-9, -0x1.91d2ccp-12, 0x1.222900p-16)
+const A=(0.12837915f0, -0.37612486f0, 0.112818025f0, -0.026766734f0, 0.0049927533f0, -0.00059910497f0)
+const B=(0.12871751f0, 0.6348467f0, 0.10677785f0, -0.02425456f0, 0.0035491996f0, -0.00038320868f0, 1.7294893f-5)
 
-const TwoOverSqrtPiMinusOne=0x1.06eba8p-3
+const TwoOverSqrtPiMinusOne=0.12837917f0
 
 
 
