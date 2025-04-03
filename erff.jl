@@ -66,7 +66,7 @@ function erff(x::Float32)
 	#  ensures erff has max. rel. error
 	#  < 1ulp on [0.921875, 4.0],
 	#  < 1.1ulps on [0.875, 4.0].  
-      r = exp(-r)
+      @inline r = exp(-r)
 
     #    Explicit copysign (calling copysignf increases latency).  
       if (sign)

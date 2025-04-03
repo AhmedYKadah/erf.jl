@@ -47,18 +47,18 @@ function erf(x::Float64)
     if (ia < 0x3feb0000)
     #  a = |x| < 0.84375.  
 
-        if (ia < 0x3e300000)
-        # a < 2^(-28).  
-            if (ia < 0x00800000)
-            # a < 2^(-1015).  
-                y =  fma(TwoOverSqrtPiMinusOne, x, x)
+        # if (ia < 0x3e300000)
+        # # a < 2^(-28).  
+        #     if (ia < 0x00800000)
+        #     # a < 2^(-1015).  
+        #         y =  fma(TwoOverSqrtPiMinusOne, x, x)
 
-                ## case of underflow TBD
-                #return check_uflow (y)
-                return y
-            end   
-            return x + TwoOverSqrtPiMinusOne * x
-        end
+        #         ## case of underflow TBD
+        #         #return check_uflow (y)
+        #         return y
+        #     end   
+        #     return x + TwoOverSqrtPiMinusOne * x
+        # end
 
         x2 = x * x
 
