@@ -3,4 +3,5 @@
 *.fls
 *.aux
 *.fdb_latexmk
+*.out
 FunctionAccuracyTests.jl
