@@ -1,0 +1,6 @@
+*.synctex.gz
+*.log
+*.fls
+*.aux
+*.fdb_latexmk
+FunctionAccuracyTests.jl

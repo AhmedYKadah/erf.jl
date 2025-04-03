@@ -17,6 +17,15 @@
 \usepackage{psfrag}
 \usepackage{pgfplots}
 \usepackage{bm}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Other Settings
@@ -32,6 +41,43 @@
 \definecolor{deepBlue}{RGB}{61,124,222}
 \definecolor{shallowBlue}{RGB}{235,249,255}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Timeline stuff
+\usepackage{etoolbox}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\titleformat{\section}[display]{\bfseries}{\Large\textcolor{gray}{%
+    \ifnumcomp{\thesection}{>}{9}{\thesection}{0\thesection}}%
+    }{1mm}{\huge}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{releaseyear}[2]{%
+blanker, breakable, 
+     left=5mm, left skip=10.2mm,
+     top=-2.2mm,
+     coltitle=black,
+     attach boxed title to top left={yshift=-12mm, xshift=-13mm},
+     fonttitle=\bfseries\Large,
+     finish={\draw[#2, line width=3mm,line cap=round]
+(frame.south west) -- (frame.north west);},
+    title={\rotatebox{90}{#1}}
+}
+\newtcolorbox{releasequarter}[2]{%
+  blanker,  
+  left=11mm,top=4mm,
+  finish={\draw[#2, line width=3mm,line cap=round]
+  (frame.south west) -- (frame.north west);},
+  coltitle=#2,
+  attach boxed title to top left={yshift=-4mm},
+  fonttitle=\bfseries,
+  title={#1}
+}
+
+
+\newcommand{\release}[2]{%
+        #1
+        \hspace*{\fill}
+        \textcolor{gray}{#2}\par}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% Define an orangebox command %%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\orangebox[1]{\fcolorbox{ocre}{mygray}{\hspace{1em}#1\hspace{1em}}}
@@ -54,11 +100,138 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title & Author %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Special Functions in Julia }
-\author{Ahmed Yasser Kadah }
+\title{GSoC 2025: Special Functions in Julia }
+\author{Ahmed Y. Kadah$^1$  
+\\Oscar D. Smith$^2$ 
+\\$^1$ Student, University of Science and Technology in Zewail City
+\\ $2$ Mentor, [affiliation]}
+\date{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
     \maketitle
-    whatever
+    \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,yshift=-1.5pt,xshift=1pt]%
+        at (current page.north west)
+        {\includegraphics[height=20mm]{images/gsoc logo}};
+    \end{tikzpicture}
+
+    \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,yshift=-1.5pt,xshift=60pt]%
+        at (current page.north west)
+        {\includegraphics[height=18mm]{images/julia logo}};
+    \end{tikzpicture}
+
+  \section*{Abstract}
+    In this project, we will work on implementing high speed and high accuracy implementations of various special functions, as well as optimizing and improving existing implementations in Julia.
+    Our work will mostly be on the SpecialFunctions.jl Julia library but will touch on some of the issues in the HyperGeometricFunctions.jl library as well. 
+
+  \section*{Introduction}
+    \subsection*{About me}\label{sub:About} 
+      Hi there! I am Ahmed Yasser Kadah, a third year Communications and Information Engineering student at the University of Science and Technology in Zewail City. TBF. 
+
+    \subsection*{Background on Special Functions}\label{sub:Background } % (fold)
+   Special functions are a class of mathematical functions that arise in the solutions of complex physical, engineering, and mathematical problems.
+   These functions are typically defined by specific properties or satisfy particular differential equations, and they include some of the most well-known functions in mathematics, such as the error function, Gamma function, and Bessel functions.
+
+   This class of functions serve a unique purpose in many different applications, as they have properties which can be utilized to solve highly complex problems which otherwise have no analytic solutions, or even assist in numerical computation.
+
+
+    Due to the nature and importance of this topic, there already exists a large number of implementations in other languages such as Wolfram Mathematica, MATLAB, and many more.
+    However, the number of memory efficient and open source implementations are somewhat limited to languages like C. 
+    Hence, our aim here is not to reinvent the wheel, but refine it. 
+
+    SpecialFunctions.jl and HyperGeometricFunctions.jl are Julia libraries which aim to provide Julia implementations/interfaces for special functions.
+    While HyperGeometricFunctions.jl is purely implemented in julia, SpecialFunctions.jl makes use of external libraries like openlibm and openspecfun which adds a layer of overhead and reduces the efficiency.
+
+
+
+    
+    % subsection* Background  (end)
+    \subsection*{Goals}\label{sub:Literature Review} % (fold)
+      The goals of the project are to (1) implement some of the functions which currently use external library calls in Julia, (2) work on fixing some of the existing issues in the github repositories, (3) optimizing poorly optimized implementations, (4) explore and add missing functions. 
+
+      The implementations of functions will make use of different methods  of numerical approximation methods like polynomial/rational approximation. 
+      Some of the important tools include: \begin{enumerate}
+        \item Remez.jl, a library for constructing minimax polynomials and rational functions 
+        \item Sollya, a powerful tool 
+      \end{enumerate}
+    
+    % subsection* Literature Review (end)
+  \section*{Deliverables and Timeline}\label{sec:Methods} % (fold)
+    \subsection*{Deliverables}
+      \begin{itemize}
+        \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{error function} and it's varieties 
+        \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
+        \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{SpecialFunctions.jl} 
+        \item At least 5 issues resolved on \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{HyperGeometricFunctions.jl} 
+        \item Implementation of \href{https://en.wikipedia.org/wiki/Appell_series}{Appel Hypergeometric Function} 
+      \end{itemize}
+    \subsection*{Timeline}
+      TBD
+      \begin{releaseyear}{June '25}{cyan}
+        \begin{releasequarter}{W 1}{cyan!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 2}{cyan!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 3}{cyan!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 4}{cyan!50}
+          \release{}{}
+        \end{releasequarter}
+      \end{releaseyear}
+      \begin{releaseyear}{July '25}{teal}
+        \begin{releasequarter}{W 1}{teal!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 2}{teal!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 3}{teal!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 4}{teal!50}
+          \release{}{}
+        \end{releasequarter}
+      \end{releaseyear}
+      \begin{releaseyear}{August '25}{orange}
+        \begin{releasequarter}{W 1}{orange!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 2}{orange!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 3}{orange!50}
+          \release{}{}
+        \end{releasequarter}
+        \begin{releasequarter}{W 4}{orange!50}
+          \release{}{}
+        \end{releasequarter}
+      \end{releaseyear}
+  
+  % section* Methods (end)
+  \section*{Expected Results}\label{sec:References} % (fold)
+    Complete, functional, high efficiency and accuracy, julia implementations of the following:
+  
+  % section* References (end)
+  \section*{References}\label{sec:References} % (fold)
+  To be organized properly: 
+  \begin{enumerate}
+\item \url{https://en.wikipedia.org/wiki/Special_functions}
+\item \url{https://en.wikipedia.org/wiki/Hypergeometric_function}
+\item \url{https://github.com/JuliaMath/SpecialFunctions.jl}
+\item \url{https://github.com/JuliaMath/HypergeometricFunctions.jl}
+\item \url{https://github.com/jishnub/LegendrePolynomials.jl}
+\item \url{https://reference.wolfram.com/language/guide/SpecialFunctions.html.en}
+\item \url{https://reference.wolfram.com/language/guide/HypergeometricFunctions.html}
+\item \url{https://www.mathworks.com/help/matlab/special-functions.html}
+\item \url{https://www.mathworks.com/help/symbolic/sym.hypergeom.html}
+\item \url{https://docs.scipy.org/doc/scipy/reference/special.html}
+\item \url{https://www.gnu.org/software/gsl/}
+  \end{enumerate}
+  
+  % section* References (end)
 \end{document}
