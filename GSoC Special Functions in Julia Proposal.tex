@@ -22,10 +22,12 @@
   colorlinks,
   citecolor=black,
   filecolor=black,
-  linkcolor=blue,
-  urlcolor=blue
+  linkcolor=black,
+  urlcolor=black
 }
 
+\usepackage{fontawesome5}
+\usepackage{todonotes}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Other Settings
@@ -125,10 +127,21 @@ blanker, breakable,
   \section*{Abstract}
     In this project, we will work on implementing high speed and high accuracy implementations of various special functions, as well as optimizing and improving existing implementations in Julia.
     Our work will mostly be on the SpecialFunctions.jl Julia library but will touch on some of the issues in the HyperGeometricFunctions.jl library as well. 
+    \todo{Improve the abstract}
 
   \section*{Introduction}
-    \subsection*{About me}\label{sub:About} 
-      Hi there! I am Ahmed Yasser Kadah, a third year Communications and Information Engineering student at the University of Science and Technology in Zewail City. TBF. 
+    \subsection*{About me 
+      \href{https://github.com/AhmedYKadah}{\faGithub}    
+      \href{https://linkedin.com/in/ahmed-yasser-kadah-83687b269}{\faLinkedin}    
+      \href{mailto:ahmadyassermo@gmail.com}{\faEnvelope[regular]}    
+    }\label{sub:About} 
+      Hi there! I am Ahmed Yasser Kadah, a third year Communications and Information Engineering student at the University of Science and Technology in Zewail City, Giza, Egypt.
+      I recently took an advanced course in partial differential equations and special functions, so when I saw this project I thought it would be interesting to follow along this path and study the topics further when it comes to real world applications and make something that would genuinely benefit others. 
+      This is my first time contributing to an open source project and just recently made my first contribution with a pull request for a Julia implementation of the Float64 erf(x) (will be explained later). 
+
+
+
+
 
     \subsection*{Background on Special Functions}\label{sub:Background } % (fold)
    Special functions are a class of mathematical functions that arise in the solutions of complex physical, engineering, and mathematical problems.
@@ -139,16 +152,20 @@ blanker, breakable,
 
     Due to the nature and importance of this topic, there already exists a large number of implementations in other languages such as Wolfram Mathematica, MATLAB, and many more.
     However, the number of memory efficient and open source implementations are somewhat limited to languages like C. 
+    \todo{Reword this}
     Hence, our aim here is not to reinvent the wheel, but refine it. 
 
     SpecialFunctions.jl and HyperGeometricFunctions.jl are Julia libraries which aim to provide Julia implementations/interfaces for special functions.
     While HyperGeometricFunctions.jl is purely implemented in julia, SpecialFunctions.jl makes use of external libraries like openlibm and openspecfun which adds a layer of overhead and reduces the efficiency.
+    \todo{Add Part about compatibility of julia implementations with auto diff, and explain what autodiff is}
 
 
 
     
     % subsection* Background  (end)
-    \subsection*{Goals}\label{sub:Literature Review} % (fold)
+    \subsection*{Goals}\label{sub:Goals} % (fold)
+    \todo{Cover more ideas and issues}
+    \todo{Go into more detail about SpecialFunctions.jl and HyperGeometricFunctions.jl and what exactly is going to be done, then add the specifics in the deliverables}
       The goals of the project are to (1) implement some of the functions which currently use external library calls in Julia, (2) work on fixing some of the existing issues in the github repositories, (3) optimizing poorly optimized implementations, (4) explore and add missing functions. 
 
       The implementations of functions will make use of different methods  of numerical approximation methods like polynomial/rational approximation. 
@@ -156,10 +173,12 @@ blanker, breakable,
         \item Remez.jl, a library for constructing minimax polynomials and rational functions 
         \item Sollya, a powerful tool 
       \end{enumerate}
+      \todo{give proper description of each}
     
     % subsection* Literature Review (end)
   \section*{Deliverables and Timeline}\label{sec:Methods} % (fold)
     \subsection*{Deliverables}
+    \todo{Break down each deliverable into what exactly is being delivered, ex. the definition of the error function, what are the targeted data types, etc.}
       \begin{itemize}
         \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{error function} and it's varieties 
         \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
@@ -168,6 +187,7 @@ blanker, breakable,
         \item Implementation of \href{https://en.wikipedia.org/wiki/Appell_series}{Appel Hypergeometric Function} 
       \end{itemize}
     \subsection*{Timeline}
+    \todo{Finish Timeline}
       TBD
       \begin{releaseyear}{June '25}{cyan}
         \begin{releasequarter}{W 1}{cyan!50}
@@ -213,12 +233,13 @@ blanker, breakable,
       \end{releaseyear}
   
   % section* Methods (end)
-  \section*{Expected Results}\label{sec:References} % (fold)
+  \section*{Expected Results}\label{sec:Results} % (fold)
     Complete, functional, high efficiency and accuracy, julia implementations of the following:
+    \todo{Finish this or make it into expected difficulties or things along that line}
   
   % section* References (end)
   \section*{References}\label{sec:References} % (fold)
-  To be organized properly: 
+    \todo{Implement the references properly}
   \begin{enumerate}
 \item \url{https://en.wikipedia.org/wiki/Special_functions}
 \item \url{https://en.wikipedia.org/wiki/Hypergeometric_function}
