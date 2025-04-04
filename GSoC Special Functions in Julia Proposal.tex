@@ -181,7 +181,15 @@ blanker, breakable,
     \todo{Break down each deliverable into what exactly is being delivered, ex. the definition of the error function, what are the targeted data types, etc.}
       \begin{itemize}
         \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{error function} and it's varieties 
-        \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
+          \begin{itemize}
+            \item Error Function: $\operatorname{erf } (x)=\frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, and BigFloat (Float64 has been implemented as said previously), for real as well as complex inputs.
+            \item Complementary Error Function: $\operatorname{erfc } (x)=1- \frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
+            \item Scaled Complementary Error Function: $\operatorname{erfcx } (x)=e ^{x^2 } \operatorname{erfc} (x)$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
+            \item Imaginary Error Function: $\operatorname{erfi } (x)= -i \operatorname{erf} (ix)$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
+            \item Dawson Function: $D (x)=\frac{\sqrt{\pi } }{2 }e ^{-x^2 } \operatorname{erfi} (x)$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
+            \item Faddeeva Function: $w (z)=e ^{-z^2 } \operatorname{erfi} (z)= \operatorname{erfcx}(-iz)$ for Float32, Float64, and BigFloat, for complex inputs.
+          \end{itemize}
+        % \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
         \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{SpecialFunctions.jl} 
         \item At least 5 issues resolved on \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{HyperGeometricFunctions.jl} 
         \item Implementation of \href{https://en.wikipedia.org/wiki/Appell_series}{Appel Hypergeometric Function} 
