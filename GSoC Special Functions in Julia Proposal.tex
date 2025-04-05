@@ -144,29 +144,34 @@ blanker, breakable,
 
 
     \subsection*{Background on Special Functions}\label{sub:Background } % (fold)
-    Special functions are a class of mathematical functions that arise in the solutions of complex physical, engineering, and mathematical problems.\cite{special functions}
+    Special functions are a class of mathematical functions that arise in the solutions of complex physical, engineering, and mathematical problems.\cite{sf book, special functions}
    These functions are typically defined by specific properties or satisfy particular differential equations, and they include some of the most well-known functions in mathematics, such as the error function, Gamma function, and Bessel functions.
 
-   This class of functions serve a unique purpose in many different applications, as they have properties which can be utilized to solve highly complex problems which otherwise have no analytic solutions, or even assist in numerical computation.
-   \todo{add part for hypergeometric functions}
+   This class of functions serves a unique purpose in many different applications, as they have properties which can be utilized to solve highly complex problems which otherwise have no analytic solutions, or even assist in numerical computation.
 
+   Another interesting class of functions, referred to as functions of the hypergeometric type, are generalized functions, of which special functions and elementary functions are special cases. \cite{sf book, hypergeometric functions} 
+   These functions also have uses in solving highly advanced problems in physics and mathematical analysis.
 
-   Due to the nature and importance of this topic in many applications, there already exists a large number of implementations in other languages such as Wolfram Mathematica \cite{wolfram special functions, wolfram hypergeometric}, MATLAB \cite{matlab special functions, matlab hypergeometric}, and many more.
-    However, the number of memory efficient and open source implementations are somewhat limited to languages like C. 
-    \todo{Reword this}
-    Hence, our aim here is not to reinvent the wheel, but refine it. 
+   Due to the nature and importance of this topic in many applications, there already exists a large number of implementations in other languages such as Wolfram Mathematica \cite{wolfram special functions, wolfram hypergeometric}, MATLAB \cite{matlab special functions, matlab hypergeometric}, Python \cite{scipy, mpmath}, C \cite{mpfr, gsl, gnu clib, cephes, ARM, amos, toms}, and others.
+   This significance shows that a natural progression would be to implement Julia versions of these functions. 
+   This, however, is not the only reason.
 
-    \href{https://github.com/JuliaMath/SpecialFunctions.jl}{\textbf{SpecialFunctions.jl}} and \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}} are Julia libraries which aim to provide Julia implementations/interfaces for special functions.
-    While HyperGeometricFunctions.jl is purely implemented in julia, SpecialFunctions.jl makes use of external libraries like openlibm and openspecfun which adds a layer of overhead and reduces the efficiency.
-    \todo{Add Part about compatibility of julia implementations with auto diff, and explain what autodiff is}
+   One of the things that make Julia a language of interest for such a project is the full integration of AutoDiff methods with Julia native functions.
+   Automatic differentiation (AutoDiff) is an approach to evaluating the derivative of a function through the use of techniques which automate the evaluation of partial derivates of the elementary arithmetic operations and functions through the repeated usage of the chain rule.\cite{autodiff, ForwardDiff.jl}
+   In other words, if a function has an algorithm implemented in julia, AutoDiff can "trace" the code to find the elementary operations and implement it's methods. 
+   This isn't the case, however, for wrapper functions for example using "ccall" (a call to a C function). 
+   Since all Julia would see is the function call, the derivative for this call would need to be manually defined to be used.
+   By implementing functions in julia, AutoDiff will automatically be compatible.
+
+   \href{https://github.com/JuliaMath/SpecialFunctions.jl}{\textbf{SpecialFunctions.jl}} and \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}} are Julia libraries which aim to provide Julia implementations/interfaces for special functions and hypergeometric functions.
+   SpecialFunctions.jl makes use of external libraries like openlibm and openspecfun which adds a layer of overhead and reduces the efficiency.
+   Meanwhile, HyperGeometricFunctions.jl is purely implemented in julia with several papers cited for the numerical approaches used in the implementations.
 
 
 
     
     % subsection* Background  (end)
     \subsection*{Goals}\label{sub:Goals} % (fold)
-    \todo{Cover more ideas and issues}
-    \todo{Go into more detail about SpecialFunctions.jl and HyperGeometricFunctions.jl and what exactly is going to be done, then add the specifics in the deliverables}
       The goals of the project are to (1) implement some of the functions which currently use external library calls in Julia, (2) work on fixing some of the existing issues in the github repositories, (3) optimizing poorly optimized implementations, (4) explore and add missing functions. 
 
       The implementations of functions will make use of different methods  of numerical approximation methods like polynomial/rational approximation. 
