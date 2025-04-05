@@ -126,8 +126,9 @@ blanker, breakable,
 
   \section*{Abstract}
     In this project, we will work on implementing high speed and high accuracy implementations of various special functions, as well as optimizing and improving existing implementations in Julia.
-    Our work will mostly be on the SpecialFunctions.jl Julia library but will touch on some of the issues in the HyperGeometricFunctions.jl library as well. 
+    Our work will mostly be on the \href{https://github.com/JuliaMath/SpecialFunctions.jl}{\textbf{SpecialFunctions.jl}} Julia library but will touch on some of the issues in the \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}} library as well. 
     \todo{Improve the abstract}
+    \todo{Add estimate for total time spent and size rating}
 
   \section*{Introduction}
     \subsection*{About me 
@@ -137,7 +138,7 @@ blanker, breakable,
     }\label{sub:About} 
       Hi there! I am Ahmed Yasser Kadah, a third year Communications and Information Engineering student at the University of Science and Technology in Zewail City, Giza, Egypt.
       I recently took an advanced course in partial differential equations and special functions, so when I saw this project I thought it would be interesting to follow along this path and study the topics further when it comes to real world applications and make something that would genuinely benefit others. 
-      This is my first time contributing to an open source project and just recently made my first contribution with a pull request for a Julia implementation of the Float64 erf(x) (will be explained later). \cite{pr} 
+      This is my first time contributing to an open source project and just recently made my first contribution with a \href{https://github.com/JuliaMath/SpecialFunctions.jl/pull/491}{\textbf{pull request}} for a Julia implementation of the Float64 erf(x) (will be explained later). 
 
 
 
@@ -148,14 +149,15 @@ blanker, breakable,
    These functions are typically defined by specific properties or satisfy particular differential equations, and they include some of the most well-known functions in mathematics, such as the error function, Gamma function, and Bessel functions.
 
    This class of functions serve a unique purpose in many different applications, as they have properties which can be utilized to solve highly complex problems which otherwise have no analytic solutions, or even assist in numerical computation.
+   \todo{add part for hypergeometric functions}
 
 
-    Due to the nature and importance of this topic, there already exists a large number of implementations in other languages such as Wolfram Mathematica, MATLAB, and many more.
+   Due to the nature and importance of this topic in many applications, there already exists a large number of implementations in other languages such as Wolfram Mathematica \cite{wolfram special functions, wolfram hypergeometric}, MATLAB \cite{matlab special functions, matlab hypergeometric}, and many more.
     However, the number of memory efficient and open source implementations are somewhat limited to languages like C. 
     \todo{Reword this}
     Hence, our aim here is not to reinvent the wheel, but refine it. 
 
-    SpecialFunctions.jl and HyperGeometricFunctions.jl are Julia libraries which aim to provide Julia implementations/interfaces for special functions.
+    \href{https://github.com/JuliaMath/SpecialFunctions.jl}{\textbf{SpecialFunctions.jl}} and \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}} are Julia libraries which aim to provide Julia implementations/interfaces for special functions.
     While HyperGeometricFunctions.jl is purely implemented in julia, SpecialFunctions.jl makes use of external libraries like openlibm and openspecfun which adds a layer of overhead and reduces the efficiency.
     \todo{Add Part about compatibility of julia implementations with auto diff, and explain what autodiff is}
 
@@ -182,12 +184,12 @@ blanker, breakable,
       \begin{itemize}
         \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{\textbf{error function}} and it's varieties \cite{error function}
           \begin{itemize}
-            \item Error Function: $\operatorname{erf } (x)=\frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, and BigFloat (Float64 has been implemented as said previously), for real as well as complex inputs.
-            \item Complementary Error Function: $\operatorname{erfc } (x)=1- \frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
-            \item Scaled Complementary Error Function: $\operatorname{erfcx } (x)=e ^{x^2 } \operatorname{erfc} (x)$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
-            \item Imaginary Error Function: $\operatorname{erfi } (x)= -i \operatorname{erf} (ix)$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
-            \item Dawson Function: $D (x)=\frac{\sqrt{\pi } }{2 }e ^{-x^2 } \operatorname{erfi} (x)$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
-            \item Faddeeva Function: $w (z)=e ^{-z^2 } \operatorname{erfi} (z)= \operatorname{erfcx}(-iz)$ for Float32, Float64, and BigFloat, for complex inputs.
+            \item Error Function: $\operatorname{erf } (x)=\frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32 and Float64 (Float64 for real values has been implemented as said previously), for real as well as complex inputs.
+            \item Complementary Error Function: $\operatorname{erfc } (x)=1- \frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, and Float64, for real as well as complex inputs.
+            \item Scaled Complementary Error Function: $\operatorname{erfcx } (x)=e ^{x^2 } \operatorname{erfc} (x)$ for Float32, and Float64, for real as well as complex inputs.
+            \item Imaginary Error Function: $\operatorname{erfi } (x)= -i \operatorname{erf} (ix)$ for Float32, and Float64, for real as well as complex inputs.
+            \item Dawson Function: $D (x)=\frac{\sqrt{\pi } }{2 }e ^{-x^2 } \operatorname{erfi} (x)$ for Float32, and Float64, for real as well as complex inputs.
+            \item Faddeeva Function: $w (z)=e ^{-z^2 } \operatorname{erfi} (z)= \operatorname{erfcx}(-iz)$ for Float32, and Float64, for complex inputs.
           \end{itemize}
         % \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
         \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{\textbf{SpecialFunctions.jl}} 
@@ -268,7 +270,7 @@ blanker, breakable,
         \end{releasequarter}
       \end{releaseyear}
 
-      \vspace{10}
+      \vspace{5px}
 
       Estimated total time spent $\approx 191 $ hours 
       
@@ -283,56 +285,81 @@ blanker, breakable,
   % \section*{References}\label{sec:References} % (fold)
     
     \begin{thebibliography}{9}
-      \bibitem{pr}
-      \url{https://github.com/JuliaMath/SpecialFunctions.jl/pull/491}
-
       \bibitem{special functions}
-      \url{https://en.wikipedia.org/wiki/Special_functions}  
+      Special Functions \url{https://en.wikipedia.org/wiki/Special_functions}  
 
       \bibitem{hypergeometric functions}
-      \url{https://en.wikipedia.org/wiki/Hypergeometric_function}
+      Hypergeometric Functions \url{https://en.wikipedia.org/wiki/Hypergeometric_function}
 
       \bibitem{error function}
-      \url{https://en.wikipedia.org/wiki/Error_function}
-
-      \bibitem{SpecialFunctions.jl}
-      \url{https://github.com/JuliaMath/SpecialFunctions.jl}
-
-      \bibitem{HypergeometricFunctions.jl}
-      \url{https://github.com/JuliaMath/HypergeometricFunctions.jl}
-
-      \bibitem{wolfram special functions}
-      \url{https://reference.wolfram.com/language/guide/SpecialFunctions.html.en}
-
-      \bibitem{wolfram hypergeometric}
-      \url{https://reference.wolfram.com/language/guide/HypergeometricFunctions.html}
-
-      \bibitem{matlab special functions}
-      \url{https://www.mathworks.com/help/matlab/special-functions.html}
-
-      \bibitem{matlab hypergeometric}
-      \url{https://www.mathworks.com/help/symbolic/sym.hypergeom.html}
-
-      \bibitem{scipy}
-      \url{https://docs.scipy.org/doc/scipy/reference/special.html}
-
-      \bibitem{gsl}
-      \url{https://www.gnu.org/software/gsl/}
-
-      \bibitem{ForwardDiff.jl}
-      \url{https://github.com/JuliaDiff/ForwardDiff.jl}
-
-      \bibitem{remez.jl}
-      \url{https://github.com/simonbyrne/Remez.jl}
-
-      \bibitem{sollya}
-      \url{https://www.sollya.org/}
-
-      \bibitem{remez}
-      \url{https://en.wikipedia.org/wiki/Remez_algorithm}
+      The Error Function \url{https://en.wikipedia.org/wiki/Error_function}
 
       \bibitem{appell}
-      \url{https://en.wikipedia.org/wiki/Appell_series}
+      The Appell Functions \url{https://en.wikipedia.org/wiki/Appell_series}
+      
+      \bibitem{SpecialFunctions.jl}
+      The SpecialFunctions.jl Julia Library \url{https://github.com/JuliaMath/SpecialFunctions.jl}
+
+      \bibitem{HypergeometricFunctions.jl}
+      The HyperGeometricFunctions.jl Julia Library \url{https://github.com/JuliaMath/HypergeometricFunctions.jl}
+
+      \bibitem{remez}
+      The Remez Algorithm \url{https://en.wikipedia.org/wiki/Remez_algorithm}
+
+      \bibitem{remez.jl}
+      The Remez.jl Julia Library \url{https://github.com/simonbyrne/Remez.jl}
+
+      \bibitem{sollya}
+      Sollya: an environment for the development of numerical codes \url{https://www.sollya.org/}
+
+      \bibitem{wolfram special functions}
+      Wolfram list of special functions \url{https://reference.wolfram.com/language/guide/SpecialFunctions.html.en}
+
+      \bibitem{wolfram hypergeometric}
+      Wolfram list of hypergeometric functions \url{https://reference.wolfram.com/language/guide/HypergeometricFunctions.html}
+
+      \bibitem{matlab special functions}
+      MATLAB list of special functions \url{https://www.mathworks.com/help/matlab/special-functions.html}
+
+      \bibitem{matlab hypergeometric}
+      MATLAB list of hypergeometric functions \url{https://www.mathworks.com/help/symbolic/sym.hypergeom.html}
+
+      \bibitem{scipy}
+      {{SciPy}: Fundamental Algorithms for Scientific Computing in Python} \url{https://docs.scipy.org/doc/scipy/reference/special.html}
+
+      \bibitem{mpmath}
+      mpmath: a {P}ython library for arbitrary-precision floating-point arithmetic \url{https://mpmath.org/}
+
+      \bibitem{gsl}
+      GNU Scientific Library \url{https://www.gnu.org/software/gsl/}
+
+      \bibitem{ForwardDiff.jl}
+      Forward-Mode Automatic Differentiation in {J}ulia \url{https://github.com/JuliaDiff/ForwardDiff.jl}
+
+      \bibitem{cephes}
+      Cephes Mathematical Library \url{https://www.netlib.org/cephes/}
+
+      \bibitem{ARM}
+      ARM Optimized Routines \url{https://github.com/ARM-software/optimized-routines/tree/master/math}
+
+      % \bibitem{amos}
+      % AMOS A Portable Package for Bessel Functions of a Complex Argument and Nonnegative Order\url{https://www.netlib.org/amos/}
+
+      \bibitem{toms}
+       ACM Collected Algorithms \url{https://www.netlib.org/toms-2014-06-10/}
+
+      \bibitem{gnu clib}
+      The GNU Standard C library \url{https://sourceware.org/git/?p=glibc.git}
+
+      \bibitem{mpfr}
+      MPFR: a C library for multiple-precision floating-point computations with correct rounding \url{https://www.mpfr.org/}
+
+      \bibitem{sf book}
+      Larry C. Andrews, \textit{"Special Functions of Mathematics for Engineers"}, 2nd Edition
+
+      \bibitem{mhs asb}
+      Michael J. Schlosser, \textit{"Multiple Hypergeometric Series – Appell Series
+and Beyond"}, https://www.mat.univie.ac.at/~schlosse/pdf/appell-survey.pdf
     \end{thebibliography}
     \todo{Finish all citations}
   
