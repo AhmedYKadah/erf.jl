@@ -174,19 +174,36 @@ blanker, breakable,
     \subsection*{Goals}\label{sub:Goals} % (fold)
       The goals of the project are to (1) implement some of the functions which currently use external library calls in Julia, (2) work on fixing some of the existing issues in the github repositories, (3) optimizing poorly optimized implementations, (4) explore and add missing functions. 
 
-      The implementations of functions will make use of different methods  of numerical approximation methods like polynomial/rational approximation. 
-      Some of the important tools include: \begin{enumerate}
-        \item Remez.jl, a library for constructing minimax polynomials and rational functions 
-        \item Sollya, another powerful tool for constructing polynomials but with a less convenient interface. Will be used as the reference for the performance of Remez.jl and possibly some contributions.
+      The two repositories of interest are SpecialFunctions.jl and HypergeometricFunctions.jl as said previously, and they will be the focus of most/all of our work. 
+
+      With regards to SpecialFunctions.jl, there are a few points of interest: \begin{itemize}
+        \item SpecialFunctions.jl/bessel.jl and SpecialFunctions.jl/gamma.jl would appear to need julia implementations, however they are both implemented in \href{https://github.com/JuliaMath/Bessels.jl/tree/master}{\textbf{Bessels.jl}} 
+        \item All BigFloat implementations make use of the MPFR library \cite{mpfr}, but quality of execution is high and there would be no merit behind implementing Julia versions considering the difficulty of implementation
+        \item The majority of SpecialFunctions.jl/erf.jl uses wrapper function calls to the C standard math library \cite{gnu clib} so this will be one of our main focuses
+        \item 64 open issues, many of which are redundant and won't be counted after a round of filteration 
+      \end{itemize}
+
+      With regards to HypergeometricFunctions.jl, there are a few points of interest: \begin{itemize}
+        \item Most other function implementations are already Julia implementations
+        \item 19 open issues, which again will be filtered for those worth working on 
+        \item It lacks implementations for the Appell functions, so this will be our main focus
+      \end{itemize}
+
+      The standard approaches for implementing special functions tend to make use of different methods of numerical approximation methods like polynomial/rational approximation. 
+      In particular, an algorithm of high significance is the \href{https://en.wikipedia.org/wiki/Remez_algorithm}{\textbf{Remez algorithm}}.
+      Some of the important tools which utilize this algorithm include: \begin{enumerate}
+        \item \href{https://github.com/simonbyrne/Remez.jl}{\textbf{Remez.jl}}, a Julia library for constructing minimax polynomials and rational functions 
+        \item \href{https://www.sollya.org/}{\textbf{Sollya}}, another powerful tool for constructing polynomials but with a less convenient interface. Will be used as the reference for the performance of Remez.jl since it is still being developed.
       \end{enumerate}
-      \todo{give proper description of each}
+      Some of the standard approaches for implementing hypergeometric functions are Taylor and asymptotic series computations, Gauss–Jacobi quadrature, numerical solution of differential equations, recurrence relations, and others.\cite{nmhg}
+      So, a lot of effort needs to be put into researching the appropriate approach for an implementation of the Appell functions.
+      To best approach these implementations, researchers of interest will be contacted to give their guidance or support.
     
     % subsection* Literature Review (end)
   \section*{Deliverables and Timeline}\label{sec:Methods} % (fold)
     \subsection*{Deliverables}
-    \todo{Break down each deliverable into what exactly is being delivered, ex. the definition of the error function, what are the targeted data types, etc.}
       \begin{itemize}
-        \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{\textbf{error function}} and it's varieties \cite{error function}
+        \item Full implementation of the \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{\textbf{Error Function}} and it's varieties \cite{error function}
           \begin{itemize}
             \item Error Function: $\operatorname{erf } (x)=\frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32 and Float64 (Float64 for real values has been implemented as said previously), for real as well as complex inputs.
             \item Complementary Error Function: $\operatorname{erfc } (x)=1- \frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, and Float64, for real as well as complex inputs.
@@ -196,9 +213,9 @@ blanker, breakable,
             \item Faddeeva Function: $w (z)=e ^{-z^2 } \operatorname{erfi} (z)= \operatorname{erfcx}(-iz)$ for Float32, and Float64, for complex inputs.
           \end{itemize}
         % \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
-        \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{\textbf{SpecialFunctions.jl}} 
-        \item At least 5 issues resolved on \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}} 
-        \item Implementation of Appel Hypergeometric Function \cite{appell} 
+        \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{\textbf{SpecialFunctions.jl}}, which will be filtered for quality
+        \item At least 5 issues resolved on \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}}, which will be filtered for quality
+        \item Full implementation of the \href{https://en.wikipedia.org/wiki/Appell_series}{\textbf{Appell Hypergeometric Functions}} \cite{appell} 
           \begin{itemize}
             \item $F_1 $ is defined for $\lvert x  \rvert <1 $, $\lvert y  \rvert < 1 $ by the series \[
               F_1(a,b_1,b_2;c;x,y)=\displaystyle\sum_{m,n=0 }^{\infty } \displaystyle\frac{(a)_{m+n }(b_1)_{m }(b_2)_{n }}{(c)_{m+n}m!n! }x ^m y^n 
@@ -221,21 +238,21 @@ blanker, breakable,
           \release{$\operatorname{erf}(x)$ for real values for Float32 }{$\approx 4$  hours}
           \release{$\operatorname{erfc}(x)$ for real values for Float32, and Float64}{$\approx 6$  hours}
           \release{$\operatorname{erf}(x)$ for complex values for Float 32, Float 64}{$\approx 8$  hours}
-          \release{$\operatorname{erfc}(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
         \end{releasequarter}
         \begin{releasequarter}{W 2}{cyan!50}
           \release{$\operatorname{erfcx}(x)$ for real values for Float 32, Float 64}{$\approx 6$  hours}
           \release{$\operatorname{erfi}(x)$ for real values for Float 32, Float 64}{$\approx 6$  hours}
-          \release{$D(x)$ for real values for Float 32, Float 64}{$\approx 6$  hours}
 
-          \release{$\operatorname{erfcx }(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
         \end{releasequarter}
         \begin{releasequarter}{W 3}{cyan!50}
+          \release{$\operatorname{erfc}(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
           \release{$\operatorname{erfi}(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
-          \release{$D(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
-          \release{$w(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
+          \release{$\operatorname{erfcx }(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
         \end{releasequarter}
         \begin{releasequarter}{W 4}{cyan!50}
+          \release{$D(x)$ for real values for Float 32, Float 64}{$\approx 6$  hours}
+          \release{$D(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
+          \release{$w(x)$ for complex values for Float 32, Float 64}{$\approx 6$  hours}
         \end{releasequarter}
       \end{releaseyear}
       \begin{releaseyear}{July '25}{teal}
@@ -282,8 +299,12 @@ blanker, breakable,
   
   % section* Methods (end)
   \section*{Expected Results}\label{sec:Results} % (fold)
-    Complete, functional, high efficiency and accuracy, julia implementations of the following:
-    \todo{Finish this or make it into expected difficulties or things along that line}
+    Complete, functional, high efficiency and accuracy, julia implementations of the deliverables with proper documentation for future work.
+    % \\ \textbf{Worst Case:} Incomplete deliverables, with high quality documentation for future attempts at completion.
+    \vspace{5px}
+    \\ \textit{Expected difficulties and risks:} Poor estimation of difficulty and time duration of individual tasks may lead to late or incomplete results.
+    This effect may snowball in the middle of the coding period and force a restructuring of the project.
+    
   
   % % section* References (end)
   % \section*{References}\label{sec:References} % (fold)
@@ -337,6 +358,9 @@ blanker, breakable,
       \bibitem{gsl}
       GNU Scientific Library \url{https://www.gnu.org/software/gsl/}
 
+      \bibitem{autodiff}
+      Automatic Differentiation \url{https://en.wikipedia.org/wiki/Automatic_differentiation}
+
       \bibitem{ForwardDiff.jl}
       Forward-Mode Automatic Differentiation in {J}ulia \url{https://github.com/JuliaDiff/ForwardDiff.jl}
 
@@ -346,8 +370,8 @@ blanker, breakable,
       \bibitem{ARM}
       ARM Optimized Routines \url{https://github.com/ARM-software/optimized-routines/tree/master/math}
 
-      % \bibitem{amos}
-      % AMOS A Portable Package for Bessel Functions of a Complex Argument and Nonnegative Order\url{https://www.netlib.org/amos/}
+      \bibitem{amos}
+      AMOS A Portable Package for Bessel Functions of a Complex Argument and Nonnegative Order\url{https://www.netlib.org/amos/}
 
       \bibitem{toms}
        ACM Collected Algorithms \url{https://www.netlib.org/toms-2014-06-10/}
@@ -363,9 +387,12 @@ blanker, breakable,
 
       \bibitem{mhs asb}
       Michael J. Schlosser, \textit{"Multiple Hypergeometric Series – Appell Series
-and Beyond"}, https://www.mat.univie.ac.at/~schlosse/pdf/appell-survey.pdf
-    \end{thebibliography}
-    \todo{Finish all citations}
+      and Beyond"}, \url{https://www.mat.univie.ac.at/~schlosse/pdf/appell-survey.pdf}
+
+      \bibitem{nmhg}
+      Pearson, J.W., Olver, S. \& Porter, M.A. Numerical methods for the computation of the confluent and Gauss hypergeometric functions. Numer Algor 74, 821–866 (2017). \url{https://doi.org/10.1007/s11075-016-0173-0}
+
+   \end{thebibliography}
   
   % section* References (end)
 \end{document}
