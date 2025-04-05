@@ -137,14 +137,14 @@ blanker, breakable,
     }\label{sub:About} 
       Hi there! I am Ahmed Yasser Kadah, a third year Communications and Information Engineering student at the University of Science and Technology in Zewail City, Giza, Egypt.
       I recently took an advanced course in partial differential equations and special functions, so when I saw this project I thought it would be interesting to follow along this path and study the topics further when it comes to real world applications and make something that would genuinely benefit others. 
-      This is my first time contributing to an open source project and just recently made my first contribution with a pull request for a Julia implementation of the Float64 erf(x) (will be explained later). 
+      This is my first time contributing to an open source project and just recently made my first contribution with a pull request for a Julia implementation of the Float64 erf(x) (will be explained later). \cite{pr} 
 
 
 
 
 
     \subsection*{Background on Special Functions}\label{sub:Background } % (fold)
-   Special functions are a class of mathematical functions that arise in the solutions of complex physical, engineering, and mathematical problems.
+    Special functions are a class of mathematical functions that arise in the solutions of complex physical, engineering, and mathematical problems.\cite{special functions}
    These functions are typically defined by specific properties or satisfy particular differential equations, and they include some of the most well-known functions in mathematics, such as the error function, Gamma function, and Bessel functions.
 
    This class of functions serve a unique purpose in many different applications, as they have properties which can be utilized to solve highly complex problems which otherwise have no analytic solutions, or even assist in numerical computation.
@@ -171,7 +171,7 @@ blanker, breakable,
       The implementations of functions will make use of different methods  of numerical approximation methods like polynomial/rational approximation. 
       Some of the important tools include: \begin{enumerate}
         \item Remez.jl, a library for constructing minimax polynomials and rational functions 
-        \item Sollya, a powerful tool 
+        \item Sollya, another powerful tool for constructing polynomials but with a less convenient interface. Will be used as the reference for the performance of Remez.jl and possibly some contributions.
       \end{enumerate}
       \todo{give proper description of each}
     
@@ -180,7 +180,7 @@ blanker, breakable,
     \subsection*{Deliverables}
     \todo{Break down each deliverable into what exactly is being delivered, ex. the definition of the error function, what are the targeted data types, etc.}
       \begin{itemize}
-        \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{error function} and it's varieties 
+        \item Fully implemented \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/erf.jl}{\textbf{error function}} and it's varieties \cite{error function}
           \begin{itemize}
             \item Error Function: $\operatorname{erf } (x)=\frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, and BigFloat (Float64 has been implemented as said previously), for real as well as complex inputs.
             \item Complementary Error Function: $\operatorname{erfc } (x)=1- \frac{2 }{\sqrt{\pi } }\int_{0}^{x} e ^{-t^2}\text{d}t$ for Float32, Float64, and BigFloat, for real as well as complex inputs.
@@ -190,13 +190,27 @@ blanker, breakable,
             \item Faddeeva Function: $w (z)=e ^{-z^2 } \operatorname{erfi} (z)= \operatorname{erfcx}(-iz)$ for Float32, Float64, and BigFloat, for complex inputs.
           \end{itemize}
         % \item Implementation of \href{https://github.com/JuliaMath/SpecialFunctions.jl/blob/master/src/gamma.jl}{gamma function} for real and complex inputs. 
-        \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{SpecialFunctions.jl} 
-        \item At least 5 issues resolved on \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{HyperGeometricFunctions.jl} 
-        \item Implementation of \href{https://en.wikipedia.org/wiki/Appell_series}{Appel Hypergeometric Function} 
+        \item At least 15 issues resolved on \href{https://github.com/JuliaMath/SpecialFunctions.jl/issues}{\textbf{SpecialFunctions.jl}} 
+        \item At least 5 issues resolved on \href{https://github.com/JuliaMath/HypergeometricFunctions.jl/issues}{\textbf{HyperGeometricFunctions.jl}} 
+        \item Implementation of Appel Hypergeometric Function \cite{appell} 
+          \begin{itemize}
+            \item $F_1 $ is defined for $\lvert x  \rvert <1 $, $\lvert y  \rvert < 1 $ by the series \[
+              F_1(a,b_1,b_2;c;x,y)=\displaystyle\sum_{m,n=0 }^{\infty } \displaystyle\frac{(a)_{m+n }(b_1)_{m }(b_2)_{n }}{(c)_{m+n}m!n! }x ^m y^n 
+            \] 
+              where $(q)_n $ is the Pochhammer symbol.
+            \item $F_2 $ is defined for $\lvert x  \rvert +\lvert y  \rvert < 1 $ by the series \[
+              F_2(a,b_1,b_2;c_1,c_2;x,y)=\displaystyle\sum_{m,n=0 }^{\infty } \displaystyle\frac{(a)_{m+n }(b_1)_{m }(b_2)_{n }}{(c_1)_{m}(c_2)_{n}m!n! }x ^m y^n 
+            \] 
+            \item $F_3 $ is defined for $\lvert x  \rvert <1 $, $\lvert y  \rvert < 1 $ by the series \[
+              F_3(a_1,a_2,b_1,b_2;c;x,y)=\displaystyle\sum_{m,n=0 }^{\infty } \displaystyle\frac{(a_1)_{m}(a_2)_{n}(b_1)_{m }(b_2)_{n }}{(c)_{m+n}m!n! }x ^m y^n 
+            \] 
+            \item $F_4 $ is defined for $\lvert x  \rvert ^{1/2} +\lvert y  \rvert ^{1/2}< 1 $ by the series \[
+              F_4(a,b;c_1,c_2;x,y)=\displaystyle\sum_{m,n=0 }^{\infty } \displaystyle\frac{(a)_{m+n }(b)_{m+n }}{(c_1)_{m}(c_2)_{n}m!n! }x ^m y^n 
+            \] 
+          \end{itemize}
       \end{itemize}
     \subsection*{Timeline}
     \todo{Finish Timeline}
-      TBD
       \begin{releaseyear}{June '25}{cyan}
         \begin{releasequarter}{W 1}{cyan!50}
           \release{}{}
@@ -245,22 +259,62 @@ blanker, breakable,
     Complete, functional, high efficiency and accuracy, julia implementations of the following:
     \todo{Finish this or make it into expected difficulties or things along that line}
   
-  % section* References (end)
-  \section*{References}\label{sec:References} % (fold)
-    \todo{Implement the references properly}
-  \begin{enumerate}
-\item \url{https://en.wikipedia.org/wiki/Special_functions}
-\item \url{https://en.wikipedia.org/wiki/Hypergeometric_function}
-\item \url{https://github.com/JuliaMath/SpecialFunctions.jl}
-\item \url{https://github.com/JuliaMath/HypergeometricFunctions.jl}
-\item \url{https://github.com/jishnub/LegendrePolynomials.jl}
-\item \url{https://reference.wolfram.com/language/guide/SpecialFunctions.html.en}
-\item \url{https://reference.wolfram.com/language/guide/HypergeometricFunctions.html}
-\item \url{https://www.mathworks.com/help/matlab/special-functions.html}
-\item \url{https://www.mathworks.com/help/symbolic/sym.hypergeom.html}
-\item \url{https://docs.scipy.org/doc/scipy/reference/special.html}
-\item \url{https://www.gnu.org/software/gsl/}
-  \end{enumerate}
+  % % section* References (end)
+  % \section*{References}\label{sec:References} % (fold)
+    
+    \begin{thebibliography}{9}
+      \bibitem{pr}
+      \url{https://github.com/JuliaMath/SpecialFunctions.jl/pull/491}
+
+      \bibitem{special functions}
+      \url{https://en.wikipedia.org/wiki/Special_functions}  
+
+      \bibitem{hypergeometric functions}
+      \url{https://en.wikipedia.org/wiki/Hypergeometric_function}
+
+      \bibitem{error function}
+      \url{https://en.wikipedia.org/wiki/Error_function}
+
+      \bibitem{SpecialFunctions.jl}
+      \url{https://github.com/JuliaMath/SpecialFunctions.jl}
+
+      \bibitem{HypergeometricFunctions.jl}
+      \url{https://github.com/JuliaMath/HypergeometricFunctions.jl}
+
+      \bibitem{wolfram special functions}
+      \url{https://reference.wolfram.com/language/guide/SpecialFunctions.html.en}
+
+      \bibitem{wolfram hypergeometric}
+      \url{https://reference.wolfram.com/language/guide/HypergeometricFunctions.html}
+
+      \bibitem{matlab special functions}
+      \url{https://www.mathworks.com/help/matlab/special-functions.html}
+
+      \bibitem{matlab hypergeometric}
+      \url{https://www.mathworks.com/help/symbolic/sym.hypergeom.html}
+
+      \bibitem{scipy}
+      \url{https://docs.scipy.org/doc/scipy/reference/special.html}
+
+      \bibitem{gsl}
+      \url{https://www.gnu.org/software/gsl/}
+
+      \bibitem{ForwardDiff.jl}
+      \url{https://github.com/JuliaDiff/ForwardDiff.jl}
+
+      \bibitem{remez.jl}
+      \url{https://github.com/simonbyrne/Remez.jl}
+
+      \bibitem{sollya}
+      \url{https://www.sollya.org/}
+
+      \bibitem{remez}
+      \url{https://en.wikipedia.org/wiki/Remez_algorithm}
+
+      \bibitem{appell}
+      \url{https://en.wikipedia.org/wiki/Appell_series}
+    \end{thebibliography}
+    \todo{Finish all citations}
   
   % section* References (end)
 \end{document}
